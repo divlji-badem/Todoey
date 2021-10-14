@@ -10,21 +10,32 @@ import UIKit
 
 class TodoListViewcontroller: UITableViewController {
 
-    let itemArray = ["Find Mike", "Buy Eggos", "Test 3"]
+    var itemArray = ["Find Mike", "Buy Eggos", "Test 3"]
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
     }
     
     //MARK:- Add New Item
     @IBAction func AddbuttonPressed(_ sender: UIBarButtonItem) {
-        
+        var textField = UITextField()
+        let alert = UIAlertController(title: "Add new Todoey item", message: "", preferredStyle: .alert)
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+            if let safeString = textField.text {
+                self.itemArray.append(safeString)
+            }
+            self.tableView.reloadData()
+        }
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
     }
     
     //MARK:- TableView Datasource Methods
-    
     // Return the number of rows for the table.
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemArray.count
@@ -41,7 +52,6 @@ class TodoListViewcontroller: UITableViewController {
        return cell
     }
     //MARK:- TableView Delegate  Methods
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // select and deselect row
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
