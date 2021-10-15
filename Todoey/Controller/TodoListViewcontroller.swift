@@ -11,10 +11,15 @@ import UIKit
 class TodoListViewcontroller: UITableViewController {
 
     var itemArray = ["Find Mike", "Buy Eggos", "Test 3"]
-    
+    //for local data storage, saves data in plist file
+    var defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //loads data from loacal data
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
     }
     
     //MARK:- Add New Item
@@ -26,9 +31,9 @@ class TodoListViewcontroller: UITableViewController {
             textField = alertTextField
         }
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
-            if let safeString = textField.text {
-                self.itemArray.append(safeString)
-            }
+            self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray,forKey: "ToDoListArray")
+            // relod tableView to see added new item
             self.tableView.reloadData()
         }
         alert.addAction(action)
