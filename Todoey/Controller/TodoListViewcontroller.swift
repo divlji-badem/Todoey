@@ -45,13 +45,14 @@ class TodoListViewcontroller: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //updating value by setting the value for titile
         //itemArray[indexPath.row].setValue("Competed", forKey: "title")
-        //itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        
+        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
         
         // deleting item on click, the order is important
         // deleting from context
-        context.delete(itemArray[indexPath.row])
-        // removig from itemArray
-        itemArray.remove(at: indexPath.row)
+//        context.delete(itemArray[indexPath.row])
+//        // removig from itemArray
+//        itemArray.remove(at: indexPath.row)
 
         saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
@@ -98,7 +99,27 @@ class TodoListViewcontroller: UITableViewController {
             itemArray = try context.fetch(request)
         } catch {
             print("Error fatching data from context \(error)")
-        }        
+        }
+        tableView.reloadData()
+    }
+}
+
+//MARK:- UISearchBarDelegate
+extension TodoListViewcontroller: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        // query database
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        //[cd] not case sensitive
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.predicate = predicate
+        let sort = NSSortDescriptor(key: "title", ascending: true)
+        request.sortDescriptors = [sort]
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fatching data from context \(error)")
+        }
+        tableView.reloadData()
     }
 }
 
