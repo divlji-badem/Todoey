@@ -43,7 +43,16 @@ class TodoListViewcontroller: UITableViewController {
     }
     //MARK:- TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        //updating value by setting the value for titile
+        //itemArray[indexPath.row].setValue("Competed", forKey: "title")
+        //itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        
+        // deleting item on click, the order is important
+        // deleting from context
+        context.delete(itemArray[indexPath.row])
+        // removig from itemArray
+        itemArray.remove(at: indexPath.row)
+
         saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
     }
@@ -89,8 +98,7 @@ class TodoListViewcontroller: UITableViewController {
             itemArray = try context.fetch(request)
         } catch {
             print("Error fatching data from context \(error)")
-        }
-        
+        }        
     }
 }
 
