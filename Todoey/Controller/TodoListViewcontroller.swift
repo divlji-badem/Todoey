@@ -7,7 +7,6 @@
 
 import UIKit
 // UITableViewController conforms To UITableViewDataSource, we dont have to write tableView.datasource = self...
-
 class TodoListViewcontroller: UITableViewController {
     
     var itemArray = [Item]()
@@ -15,18 +14,7 @@ class TodoListViewcontroller: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let newItem1 = Item()
-        newItem1.title = "Test1"
-        itemArray.append(newItem1)
-        
-        let newItem2 = Item()
-        newItem2.title = "Test2"
-        itemArray.append(newItem2)
-        
-        let newItem3 = Item()
-        newItem3.title = "Test3"
-        itemArray.append(newItem3)
+        loadData()        
     }
     
     //MARK:- Add New Item
@@ -87,10 +75,20 @@ class TodoListViewcontroller: UITableViewController {
             let data = try encoder.encode(itemArray)
             try data.write(to: dataFilePath!)
         } catch {
-            print("Error encodind item array, \(error)")
+            print("Error encoding item array, \(error)")
         }
         // relod tableView to see added new item
         tableView.reloadData()
+    }
+    func loadData() {
+        if let data = try? Data(contentsOf: dataFilePath!){
+            let decoder = PropertyListDecoder()
+            do{
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding item array, \(error)")
+            }
+        }
     }
 }
 
