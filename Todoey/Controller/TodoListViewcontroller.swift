@@ -19,7 +19,7 @@ class TodoListViewcontroller: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(dataFilePath)
-        loadData()        
+        loadData()
     }
     
     //MARK:- TableView Datasource Methods
@@ -93,8 +93,8 @@ class TodoListViewcontroller: UITableViewController {
         // relod tableView to see added new item
         tableView.reloadData()
     }
-    func loadData() {
-        let request : NSFetchRequest<Item> = Item.fetchRequest()
+    //parameter with default value
+    func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -110,16 +110,9 @@ extension TodoListViewcontroller: UISearchBarDelegate {
         // query database
         let request : NSFetchRequest<Item> = Item.fetchRequest()
         //[cd] not case sensitive
-        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-        request.predicate = predicate
-        let sort = NSSortDescriptor(key: "title", ascending: true)
-        request.sortDescriptors = [sort]
-        do {
-            itemArray = try context.fetch(request)
-        } catch {
-            print("Error fatching data from context \(error)")
-        }
-        tableView.reloadData()
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        loadData(with: request)
     }
 }
 
