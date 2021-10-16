@@ -19,7 +19,7 @@ class TodoListViewcontroller: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         print(dataFilePath)
-        loadData()
+        loadItems()
     }
     
     //MARK:- TableView Datasource Methods
@@ -94,7 +94,7 @@ class TodoListViewcontroller: UITableViewController {
         tableView.reloadData()
     }
     //parameter with default value
-    func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
         do {
             itemArray = try context.fetch(request)
         } catch {
@@ -112,7 +112,17 @@ extension TodoListViewcontroller: UISearchBarDelegate {
         //[cd] not case sensitive
         request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        loadData(with: request)
+        loadItems(with: request)
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            // it should happen in main tread
+            DispatchQueue.main.async {
+                // remove cursor from searchbar
+                searchBar.resignFirstResponder()
+            }
+        }
     }
 }
 
