@@ -11,13 +11,14 @@ import CoreData
 class TodoListViewcontroller: UITableViewController {
     
     var itemArray = [Item]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+    // path where data is stored
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     // insted of calling app delegate we call shared singleton app instance
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print(dataFilePath!)
+        print(dataFilePath)
         //loadData()        
     }
     
