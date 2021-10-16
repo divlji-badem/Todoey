@@ -14,32 +14,8 @@ class TodoListViewcontroller: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(dataFilePath!)
         loadData()        
-    }
-    
-    //MARK:- Add New Item
-    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
-        var textField = UITextField()
-        
-        let alert = UIAlertController(title: "Add new Todoey item", message: "", preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: "Add Item", style: .default) { action in
-            
-            let newItem = Item()
-            newItem.title = textField.text!
-            self.itemArray.append(newItem)
-            
-            self.saveItems()
-        }
-        
-        alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create new item"
-            textField = alertTextField
-        }
-        
-        alert.addAction(action)
-        
-        present(alert, animated: true, completion: nil)
     }
     
     //MARK:- TableView Datasource Methods
@@ -68,6 +44,30 @@ class TodoListViewcontroller: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+    //MARK:- Add New Item
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add new Todoey item", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+            
+            let newItem = Item()
+            newItem.title = textField.text!
+            self.itemArray.append(newItem)
+            
+            self.saveItems()
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
     //MARK:- Model Manipulation Methods
     func saveItems() {
         let encoder = PropertyListEncoder()
