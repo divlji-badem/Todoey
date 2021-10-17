@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //path to the plist file Library/prefferences
         //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         // url to realm file
-        //print(Realm.Configuration.defaultConfiguration.fileURL)
+        print(Realm.Configuration.defaultConfiguration.fileURL)
         
         return true
     }

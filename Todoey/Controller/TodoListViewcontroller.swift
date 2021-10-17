@@ -15,8 +15,7 @@ class TodoListViewcontroller: UITableViewController {
         didSet{
             loadItems()
         }
-    }
-    
+    }    
     override func viewDidLoad() {
         super.viewDidLoad()
         //print(dataFilePath)
@@ -39,18 +38,16 @@ class TodoListViewcontroller: UITableViewController {
     }
     //MARK:- TableView Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //updating value by setting the value for titile
-        //itemArray[indexPath.row].setValue("Competed", forKey: "title")
-        
-        //itemArray[indexPath.row].done = !itemArray[indexPath.row].done
-        
-        // deleting item on click, the order is important
-        // deleting from context
-//        context.delete(itemArray[indexPath.row])
-//        // removig from itemArray
-//        itemArray.remove(at: indexPath.row)
-
-        //saveItems()
+        if let item = todoItems?[indexPath.row]{
+            do {
+                try realm.write({
+                    item.done = !item.done
+                })
+            } catch {
+                print("Error saving done status, \(error)")
+            }
+        }
+        tableView.reloadData()
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
