@@ -6,17 +6,16 @@
 //
 
 import UIKit
-import CoreData
-
+import RealmSwift
 
 class CategoryViewController: UITableViewController {
-    
+    let realm = try! Realm()
     var categoryArray = [Category]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadCategories()
+        //loadCategories()
     }
     
     //MARK: - TableView Datasource Methods
@@ -38,11 +37,11 @@ class CategoryViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add", style: .default) { action in
             
-            let newCategory = Category(context: self.context)
+            let newCategory = Category()
             newCategory.name = textField.text!
             self.categoryArray.append(newCategory)
             
-            self.saveCategories()
+            self.save(category: newCategory)
         }
         
         alert.addTextField { (alertTextField) in
@@ -55,23 +54,25 @@ class CategoryViewController: UITableViewController {
         present(alert, animated: true, completion: nil)
     }
     //MARK: - Data manipulation
-    func saveCategories() {
+    func save(category: Category) {
         do {
-            try context.save()
+            try realm.write({
+                realm.add(category)
+            })
         } catch {
             print("Error saving context \(error)")
         }
         tableView.reloadData()
     }
     
-    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
-        do {
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error fatching data from context \(error)")
-        }
-        tableView.reloadData()
-    }
+//    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+//        do {
+//            categoryArray = try context.fetch(request)
+//        } catch {
+//            print("Error fatching data from context \(error)")
+//        }
+//        tableView.reloadData()
+//    }
 
     //MARK: - TableView delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
