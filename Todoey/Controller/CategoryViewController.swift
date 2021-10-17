@@ -59,7 +59,7 @@ class CategoryViewController: UITableViewController {
                 realm.add(category)
             })
         } catch {
-            print("Error saving context \(error)")
+            print("Error saving category \(error)")
         }
         tableView.reloadData()
     }
