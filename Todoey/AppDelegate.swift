@@ -17,11 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //path to the plist file Library/prefferences
         //print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
+
+        let data = Data()
+        data.name = "Nevena"
+        data.age = 16
+        
         do {
             let realm = try Realm()
+            try realm.write {
+                realm.add(data)
+            }
         } catch {
             print("Error installing new realm, \(error)")
         }
+        print(Realm.Configuration.defaultConfiguration.fileURL)
+        
         return true
     }
 
