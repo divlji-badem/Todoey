@@ -8,6 +8,7 @@
 import UIKit
 import RealmSwift
 import ChameleonFramework
+
 class TodoListViewcontroller: SwipeTableViewController {
     
     var realm = try! Realm()
@@ -17,11 +18,29 @@ class TodoListViewcontroller: SwipeTableViewController {
             loadItems()
         }
     }    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //print(dataFilePath)
         loadItems()
         tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let hexColor = selectedCategory?.hexColor {
+            title = selectedCategory!.name
+            guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exists")}
+            if let navBarColour = UIColor(hexString: hexColor) {
+                navBar.barTintColor = navBarColour
+                navBar.tintColor = ContrastColorOf(navBarColour, returnFlat: true)
+                searchBar.barTintColor = navBarColour
+                if #available(iOS 13.0, *) {
+                   searchBar.searchTextField.backgroundColor = UIColor.white
+                }
+                navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(navBarColour, returnFlat: true)]
+            }
+        }
     }
     
     //MARK:- TableView Datasource Methods

@@ -41,12 +41,14 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Items" id="pt2-fW-7Nw">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ztq-Fs-z8B">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="wiM-Y4-dtZ" id="6FT-Co-Dh2"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="na2-D8-REP" id="aVS-Su-kwu"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N2P-rh-hDI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -60,7 +62,6 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ryp-l0-uUe">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="0.3529411764705882" green="0.78431372549019607" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
@@ -99,7 +100,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Todoey" id="nLz-D9-mTe">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="qFM-iw-6V3">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="RBM-zu-wHh" id="GFr-Hi-w1m"/>
                             </connections>

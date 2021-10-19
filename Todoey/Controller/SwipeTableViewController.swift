@@ -7,7 +7,7 @@
 
 import UIKit
 import SwipeCellKit
-
+import ChameleonFramework
 class SwipeTableViewController: UITableViewController, SwipeTableViewCellDelegate {
 
     override func viewDidLoad() {

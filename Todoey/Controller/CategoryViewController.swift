@@ -7,7 +7,6 @@
 
 import UIKit
 import RealmSwift
-import SwipeCellKit
 import ChameleonFramework
 
 class CategoryViewController: SwipeTableViewController {
@@ -20,6 +19,13 @@ class CategoryViewController: SwipeTableViewController {
         loadCategories()
         tableView.separatorStyle = .none
     }
+    override func viewWillAppear(_ animated: Bool) {
+        guard let navBar = navigationController?.navigationBar else { fatalError("Navigation controller does not exists")}
+        let navBarColour = UIColor(hexString: "#1D9BF6")!
+        navBar.tintColor = ContrastColorOf(navBarColour, returnFlat: true)
+        navBar.barTintColor = navBarColour
+        navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: ContrastColorOf(navBarColour, returnFlat: true)]
+    }
     
     //MARK: - TableView Datasource Methods
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -28,8 +34,13 @@ class CategoryViewController: SwipeTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No categories added"
-        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].hexColor ?? "#5AC8FA")
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories added"
+        if let category = categories?[indexPath.row] {
+            guard let categoryColour = UIColor(hexString: category.hexColor!) else {
+                fatalError()}
+            cell.backgroundColor = categoryColour
+            cell.textLabel?.textColor = ContrastColorOf(categoryColour, returnFlat: true)
+        }
         return cell
     }
     
@@ -89,7 +100,9 @@ class CategoryViewController: SwipeTableViewController {
     //MARK: - TableView delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "goToItems", sender: self)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
+    
     // this will triger just before we trigger performSegue
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let destinationVC = segue.destination as! TodoListViewcontroller
