@@ -10,6 +10,7 @@ import RealmSwift
 
 class Category: Object {
     @objc dynamic var name: String = ""
+    @objc dynamic var hexColor: String?
     // relationship each category can have more than once items
     let items = List<Item>()
 }
